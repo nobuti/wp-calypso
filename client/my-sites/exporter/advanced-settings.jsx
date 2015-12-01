@@ -6,9 +6,8 @@ import React, { PropTypes } from 'react';
 /**
  * Internal dependencies
  */
-import CompactCard from 'components/card/compact';
-import Button from 'components/forms/form-button';
 import OptionFieldset from 'my-sites/exporter/option-fieldset';
+import SpinnerButton from './spinner-button';
 
 /**
  * Displays additional options for customising an export
@@ -23,8 +22,10 @@ export default React.createClass( {
 	propTypes: {
 		// Event handlers
 		onToggleFieldset: PropTypes.func.isRequired,
+		onClickExport: PropTypes.func.isRequired,
 
 		// Data
+		canStartExport: PropTypes.bool.isRequired,
 		posts: PropTypes.shape( {
 			isEnabled: PropTypes.bool.isRequired
 		} ),
@@ -68,7 +69,7 @@ export default React.createClass( {
 		} );
 
 		return (
-			<CompactCard className="exporter__more-info">
+			<div className="exporter__advanced-settings">
 				<h1 className="exporter__advanced-settings-title">
 					{ this.translate( 'Select Content to Export' ) }
 				</h1>
@@ -87,10 +88,14 @@ export default React.createClass( {
 						description={ this.translate( 'Survey results etc.' ) }
 					/>
 				</div>
-				<Button isPrimary={ true }>
-					{ this.translate( 'Export Selected Content' ) }
-				</Button>
-			</CompactCard>
+				<SpinnerButton
+					className="exporter__export-button"
+					loading={ this.props.shouldShowProgress }
+					isPrimary={ true }
+					onClick={ this.props.onClickExport }
+					text={ this.translate( 'Export Selected Content' ) }
+					loadingText={ this.translate( 'Exporting…' ) } />
+			</div>
 		);
 	}
 } );
