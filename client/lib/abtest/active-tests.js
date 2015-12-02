@@ -54,4 +54,13 @@ module.exports = {
 		},
 		defaultVariation: 'drake'
 	},
+	dss: {
+		datestamp: '20151209',
+		variations: {
+			main: 15,
+			dss: 15,
+			notTested: 70
+		},
+		defaultVariation: 'main'
+	}
 };
