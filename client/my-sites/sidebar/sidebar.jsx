@@ -106,6 +106,10 @@ module.exports = React.createClass( {
 	stats: function() {
 		var site = this.getSelectedSite();
 
+		if ( ! site.capabilities ) {
+			return null;
+		}
+
 		if ( site.capabilities && ! site.capabilities.view_stats ) {
 			return null;
 		}
@@ -180,6 +184,10 @@ module.exports = React.createClass( {
 			return null;
 		}
 
+		if ( ! site.capabilities ) {
+			return null;
+		}
+
 		if ( site.capabilities && ! site.capabilities.edit_theme_options ) {
 			return null;
 		}
@@ -249,6 +257,10 @@ module.exports = React.createClass( {
 			return null;
 		}
 
+		if ( ! site.capabilities ) {
+			return null;
+		}
+
 		if ( site.capabilities && ! site.capabilities.manage_options ) {
 			return null;
 		}
@@ -276,11 +288,6 @@ module.exports = React.createClass( {
 	},
 
 	plan: function() {
-		var site = this.getSelectedSite(),
-			planLink = '/plans' + this.siteSuffix(),
-			planName = ( this.isSingle() ) ? site.plan.product_name_short : '',
-			linkClass = 'upgrades-nudge';
-
 		if ( ! config.isEnabled( 'manage/plans' ) ) {
 			return null;
 		}
@@ -289,10 +296,20 @@ module.exports = React.createClass( {
 			return null;
 		}
 
+		const site = this.getSelectedSite();
+
+		if ( ! site.capabilities ) {
+			return null;
+		}
+
 		if ( site.capabilities && ! site.capabilities.manage_options ) {
 			return null;
 		}
 
+		const planLink = '/plans' + this.siteSuffix(),
+			planName = ( this.isSingle() ) ? site.plan.product_name_short : '';
+
+		let linkClass = 'upgrades-nudge';
 		if ( productsValues.isPlan( site.plan ) ) {
 			linkClass += ' is-paid-plan';
 		}
@@ -316,6 +333,10 @@ module.exports = React.createClass( {
 	sharing: function() {
 		var site = this.getSelectedSite(),
 			sharingLink = '/sharing' + this.siteSuffix();
+
+		if ( ! site.capabilities ) {
+			return null;
+		}
 
 		if ( site.jetpack && ! site.isModuleActive( 'publicize' ) && ( ! site.isModuleActive( 'sharedaddy' ) || site.versionCompare( '3.4-dev', '<' ) ) ) {
 			return null;
@@ -350,6 +371,10 @@ module.exports = React.createClass( {
 			addPeopleLink = '/people' + this.siteSuffix() + '/new',
 			addPeopleTarget = '_self',
 			addPeopleButton;
+
+		if ( ! site.capabilities ) {
+			return null;
+		}
 
 		if ( site.capabilities && ! site.capabilities.list_users ) {
 			return null;
@@ -389,6 +414,10 @@ module.exports = React.createClass( {
 	siteSettings: function() {
 		var site = this.getSelectedSite(),
 			siteSettingsLink = '/settings/general' + this.siteSuffix();
+
+		if ( ! site.capabilities ) {
+			return null;
+		}
 
 		if ( site.capabilities && ! site.capabilities.manage_options ) {
 			return null;
