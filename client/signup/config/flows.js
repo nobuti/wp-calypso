@@ -155,6 +155,11 @@ function removeUserStepFromFlow( flow ) {
 }
 
 function getCurrentFlowNameFromTest() {
+	// Safety check for tests.
+	if ( typeof window === 'undefined' ) {
+		return 'main';
+	}
+
 	// Only consider users from the general /start path.
 	if ( '/start' === window.location.pathname && 'dss' === abtest( 'dss' ) ) {
 		return 'dss';
