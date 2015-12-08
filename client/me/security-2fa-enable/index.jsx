@@ -15,7 +15,8 @@ var FormButton = require( 'components/forms/form-button' ),
 	Notice = require( 'components/notice' ),
 	Security2faProgress = require( 'me/security-2fa-progress' ),
 	twoStepAuthorization = require( 'lib/two-step-authorization' ),
-	analytics = require( 'analytics' );
+	analytics = require( 'analytics' ),
+	constants = require( 'me/constants' );
 
 module.exports = React.createClass( {
 
@@ -324,9 +325,10 @@ module.exports = React.createClass( {
 				{ this.renderInputHelp() }
 				<FormTelInput
 					autoComplete="off"
+					autoFocus
 					disabled={ this.state.submittingForm }
 					name="verification-code"
-					placeholder="123456"
+					placeholder={ 'sms' === this.state.method ? constants.sevenDigit2faPlaceholder : constants.sixDigit2faPlaceholder }
 					type="text"
 					valueLink={ this.linkState( 'verificationCode' ) }
 					onFocus={ function() {
