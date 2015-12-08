@@ -7,7 +7,7 @@
 	height: 51px;
 	position: relative;
 	// places search above filters
-	z-index: 22;
+	z-index: z-index( 'search', 'base' );
 
 	@include breakpoint( "<660px" ) {
 		width: 50px;
@@ -18,7 +18,7 @@
 			top: 0;
 			bottom: 0;
 		width: 60px;
-		z-index: 20;
+		z-index: z-index( 'search', 'noticon-search' );
 		color: $blue-wordpress;
 		cursor: pointer;
 
@@ -53,7 +53,7 @@
 			right: 0;
 		width: 60px;
 		cursor: pointer;
-		z-index: 20;
+		z-index: z-index( 'search', 'noticon-close-alt' );
 		color: $gray-dark;
 		display: none;
 		opacity: 0;
@@ -94,7 +94,7 @@
 		top: 0;
 		right: 0;
 	// matching dropdown-selector
-	z-index: 170;
+	z-index: z-index( 'search', 'pinned' );
 
 	.noticon-search {
 		right: 0;
@@ -108,7 +108,7 @@
 .search__input[type="search"] {
 	display: none;
 	position: absolute;
-	z-index: 10;
+	z-index: z-index( 'search', 'input' );
 	top: 0;
 	padding: 0 50px 0 60px;
 	border: none;
@@ -176,7 +176,7 @@
 
 .search.is-searching .spinner {
 	display: block;
-	z-index: 20;
+	z-index: z-index( 'search', 'spinner' );
 }
 
 @include breakpoint( "<660px" ) {

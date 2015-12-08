@@ -22,7 +22,7 @@
 
 	&.is-draggable.is-active {
 		position: fixed;
-		z-index: 1000;
+		z-index: z-index( 'body', 'sortable-list-draggable-active' );
 	}
 
 	&.is-shadow {

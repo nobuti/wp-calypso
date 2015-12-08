@@ -5,6 +5,7 @@
 @import 'shared/utilities';                    // Helper classes
 @import 'shared/typography';                   // all the typographic rules, variables, etc.
 @import 'shared/mixins/mixins';                // sass mixins for gradients, bordius radii, etc.
+@import 'shared/functions/functions';          // sass functions for z-index, etc.
 @import 'shared/extends';                      // sass extends for commonly used styles
 @import 'shared/animation';                    // all UI animation
 @import 'shared/forms';                        // form styling

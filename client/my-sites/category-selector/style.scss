@@ -96,7 +96,7 @@
 }
 
 .category-selector__add-category-info {
-	z-index: 100201;
+	z-index: z-index( 'body', 'popover-category-selector-add-category-info' );
 
 	.gridicon {
 		position: relative;

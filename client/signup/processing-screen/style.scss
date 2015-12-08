@@ -55,7 +55,7 @@
 			margin-top: -3px;
 			vertical-align: middle;
 			width: 15px;
-			z-index: 1;
+			z-index: z-index( 'processing-screen', 'is-processing-before' );
 		}
 	}
 
