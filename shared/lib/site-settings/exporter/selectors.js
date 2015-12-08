@@ -1,5 +1,94 @@
 import { States } from './constants.js';
 
+function mapOptions( state, section, name, mapFunc ) {
+	const rawData = state.siteSettings.exporter.data.get( 'advancedSettings' );
+	if ( !rawData || rawData.count() === 0 ) return [];
+
+	return rawData.get( section ).get( name ).map( mapFunc );
+}
+
+export function getAuthorOptions( state, section ) {
+	return mapOptions( state, section, 'authors', ( author ) => ( {
+		key: author.get( 'ID' ), label: author.get( 'name' )
+	} ) );
+}
+
+export function getStatusOptions( state, section ) {
+	return mapOptions( state, section, 'statuses', ( status ) => ( {
+		key: status.get( 'name' ), label: status.get( 'label' )
+	} ) );
+}
+
+export function getDateOptions( state, section ) {
+	const months = [ 'N/A', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+		'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
+
+	return mapOptions( state, section, 'export_date_options', ( date ) => {
+		if ( parseInt( date.get( 'month' ) ) === 0 || parseInt( date.get( 'year' ) ) === 0 ) {
+			return {
+				key: '0',
+				label: 'Unknown'
+			}
+		}
+
+		return {
+			key: `${ date.get( 'month' ) } ${ date.get( 'year' ) }`,
+			label: `${ months[ date.get( 'month' ) ] } ${ date.get( 'year' ) }`
+		}
+	} );
+}
+
+export function getCategoryOptions( state, section ) {
+	return mapOptions( state, section, 'categories', ( category ) => ( {
+		key: category.get( 'name' ), label: category.get( 'name' )
+	} ) );
+}
+
+/**
+ * This function transforms the current UI state into the data ready for
+ * sending to the server.
+ *
+ * @param  {Object} state    Global state tree
+ * @return {Object}          Data to be sent to the server for starting the export
+ */
+export function prepareExportRequest( state ) {
+	const data = state.siteSettings.exporter.ui.get( 'advancedSettings' );
+
+	let requestData = {};
+	const postsEnabled = data.get( 'posts' ).get( 'isEnabled' );
+	const pagesEnabled = data.get( 'pages' ).get( 'isEnabled' );
+
+	if ( postsEnabled && pagesEnabled ) {
+		requestData.content = 'all';
+	} else if ( postsEnabled ) {
+		requestData.content = 'posts';
+	} else if ( pagesEnabled ) {
+		requestData.content = 'pages';
+	}
+
+	const prepareSetting = ( section, setting ) => {
+		const value = data.get( section ).get( setting );
+		if ( parseInt( value ) === 0 ) {
+			return undefined;
+		}
+
+		return value;
+	}
+
+	requestData.post_author = prepareSetting( 'posts', 'author' );
+	requestData.post_status = prepareSetting( 'posts', 'status' );
+	requestData.post_start_date = prepareSetting( 'posts', 'startDate' );
+	requestData.post_end_date = prepareSetting( 'posts', 'endDate' );
+	requestData.cat = prepareSetting( 'posts', 'category' );
+
+	requestData.page_author = prepareSetting( 'pages', 'author' );
+	requestData.page_status = prepareSetting( 'pages', 'status' );
+	requestData.page_start_date = prepareSetting( 'pages', 'startDate' );
+	requestData.page_end_date = prepareSetting( 'pages', 'endDate' );
+
+	return requestData;
+}
+
 /**
  * Indicates whether an export can be started
  *
