@@ -1,5 +1,13 @@
 import stepActions from 'lib/signup/step-actions';
-import { abtest } from 'lib/abtest';
+
+function getSurveyFromURL() {
+	// Safety check for tests.
+	if ( typeof window === 'undefined' ) {
+		return 'blog';
+	}
+
+	return ( '/start/vert-blog' === window.location.pathname ) ? 'blog' : 'site';
+}
 
 module.exports = {
 	themes: {
@@ -42,20 +50,10 @@ module.exports = {
 		providesDependencies: [ 'bearer_token', 'username' ]
 	},
 
-	'survey-blog': {
-		stepName: 'survey-blog',
+	survey: {
+		stepName: 'survey',
 		props: {
-			surveySiteType: 'blog',
-			isOneStep: abtest( 'verticalSurvey' ) === 'oneStep'
-		},
-		providesDependencies: [ 'surveySiteType', 'surveyQuestion' ]
-	},
-
-	'survey-site': {
-		stepName: 'survey-site',
-		props: {
-			surveySiteType: 'site',
-			isOneStep: abtest( 'verticalSurvey' ) === 'oneStep'
+			surveySiteType: getSurveyFromURL()
 		},
 		providesDependencies: [ 'surveySiteType', 'surveyQuestion' ]
 	},

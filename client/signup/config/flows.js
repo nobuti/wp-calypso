@@ -65,18 +65,11 @@ const flows = {
 		lastModified: '2015-09-22'
 	},
 
-	'vert-blog': {
-		steps: abtest( 'verticalSurvey' ) === 'noSurvey' ? [ 'themes', 'domains', 'plans', 'user' ] : [ 'survey-blog', 'themes', 'domains', 'plans', 'survey-user' ],
+	verticals: {
+		steps: [ 'survey', 'themes', 'domains', 'plans', 'survey-user' ],
 		destination: getCheckoutDestination,
 		description: 'Categorizing blog signups for Verticals Survey',
-		lastModified: null
-	},
-
-	'vert-site': {
-		steps: abtest( 'verticalSurvey' ) === 'noSurvey' ? [ 'themes', 'domains', 'plans', 'user' ] : [ 'survey-site', 'themes', 'domains', 'plans', 'survey-user' ],
-		destination: getCheckoutDestination,
-		description: 'Categorizing site signups for Verticals Survey',
-		lastModified: null
+		lastModified: '2015-12-08'
 	},
 
 	headstart: {
@@ -154,8 +147,23 @@ function removeUserStepFromFlow( flow ) {
 	} );
 }
 
+function getCurrentFlowNameFromTest() {
+	// Safety check for tests.
+	if ( typeof window === 'undefined' ) {
+		return 'main';
+	}
+
+	// Assign the user to the verticals survey test if appropriate.
+	const pathname = window.location.pathname;
+	if ( '/start/vert-blog' === pathname || '/start/vert-site' === pathname ) {
+		return ( 'noSurvey' === abtest( 'verticalSurvey' ) ) ? 'main' : 'verticals';
+	}
+
+	return 'main';
+}
+
 module.exports = {
-	currentFlowName: 'main',
+	currentFlowName: getCurrentFlowNameFromTest(),
 
 	defaultFlowName: 'main',
 
